@@ -15,7 +15,7 @@ export const useFinnhubSocket = (symbols = []) => {
 
         if (symbols.length === 0) return;
 
-        setStatus("Connecting to WebSocket...");
+        setStatus("Connecting to WebSocket");
         const socket = new WebSocket(`wss://ws.finnhub.io?token=${API_KEY}`);
         socketRef.current = socket;
 
@@ -35,10 +35,21 @@ export const useFinnhubSocket = (symbols = []) => {
                     setSocketData((prev) => {
                         const next = { ...prev };
                         response.data.forEach((trade) => {
+                            const prevPrice = next[trade.s]?.price;
+                            const newPrice = trade.p;
+                            let direction = next[trade.s]?.direction || 'same';
+
+                            if (newPrice > prevPrice) {
+                                direction = 'up';
+                            } else if (newPrice < prevPrice) {
+                                direction = 'down';
+                            }
+
                             next[trade.s] = {
-                                price: trade.p,
+                                price: newPrice,
                                 volume: trade.v,
-                                time: trade.t
+                                time: trade.t,
+                                direction: direction
                             };
                         });
                         return next;

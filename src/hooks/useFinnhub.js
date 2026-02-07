@@ -39,7 +39,6 @@ export const useFinnhub = () => {
                                 time: Date.now()
                             };
                         }
-                        console.log("data:", data);
                     } catch (e) {
                         console.warn(`Failed to fetch: ${symbol}`, e);
                     }
@@ -47,15 +46,14 @@ export const useFinnhub = () => {
                 await Promise.all(promises);
                 setInitialData(initialDatas);
             } catch (err) {
-                console.error("Error fetching initial quotes:", err);
+                console.error("Error fetching initial:", err);
             }
         };
 
         fetchInitial();
     }, []);
 
-    // Merge: Initial Data (Base) + Socket Data (Updates)
-    // Socket updates overwrite initial data because they are newer.
+
     const realtimeData = { ...initialData, ...socketData };
 
     // Prepare sections
