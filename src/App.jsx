@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import Stocks from './components/Stocks'
 import './App.css'
 
 function App() {
 
   return (
     <>
-      <div>deneme 123</div>
+      <main>
+        <Stocks />
+      </main>
     </>
   )
 }
