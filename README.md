@@ -1,16 +1,47 @@
-# React + Vite
+# Real-time Stock Market Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React-based application that provides real-time tracking of US Stocks and Cryptocurrency prices. It utilizes the Finnhub API **using both WebSocket and REST API** to fetch initial market data and stream live trade updates, offering an efficient and responsive user experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Real-time Data Streaming(WebSocket):** Uses WebSocket integration to receive live trade updates for multiple assets simultaneously without polling.
+- **REST API Fallback:** Fetches initial price snapshots via REST API to ensure data availability immediately upon load, even before the first WebSocket message arrives.
+- **Hybrid Data Management:** Merges static REST data with dynamic WebSocket updates to maintain a consistent and up-to-date UI.
+- **Optimized Performance:**
+    - **Separate Hooks:** Decoupled logic with `useFinnhub` (Data Management) and `useFinnhubSocket` (Connection Handling) for better separation of concerns.
+    - **Static Symbol Lists:** Uses predefined lists for major US Stocks and Cryptocurrencies to minimize API overhead and latency.
+- **Modern UI:** Built with Tailwind CSS for a responsive, clean, and professional dashboard interface.
 
-## React Compiler
+## Architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The application logic is split into two custom hooks:
 
-## Expanding the ESLint configuration
+1.  **`useFinnhubSocket.js`**: Manages the WebSocket connection lifecycle. It handles connecting, subscribing to symbols, converting incoming binary/JSON streams into a structured state, and calculating price directions (Up/Down) by comparing consecutive ticks.
+2.  **`useFinnhub.js`**: Acts as the main data controller. It fetches initial data via REST to populate the view instantly and then merges it with the live stream from `useFinnhubSocket`. It formats the data into "Sections" (US Stocks, Crypto) for the UI component.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Setup and Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone <repository_url>
+    ```
+
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3.  Configure Environment Variables:
+    Create a `.env` file in the root directory and add your Finnhub API key:
+    ```env
+    VITE_FINNHUB_API_KEY=your_api_key_here
+    ```
+
+4.  Run the development server:
+    ```bash
+    npm run dev
+    ```
+
+## Usage
+
+Once the application is running, it will automatically connect to the Finnhub WebSocket server. You will see a dashboard displaying a curated list of US Stocks and Cryptocurrencies. Prices will flash and update in real-time as trades occur on the exchange.

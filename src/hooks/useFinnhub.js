@@ -54,9 +54,8 @@ export const useFinnhub = () => {
     }, []);
 
 
-    const realtimeData = { ...initialData, ...socketData };
+    const realtimeData = {...initialData, ...socketData};
 
-    // Prepare sections
     const sections = [
         {
             id: 1,

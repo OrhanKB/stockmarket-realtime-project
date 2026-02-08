@@ -4,7 +4,7 @@ function Stocks() {
     const { sections, status } = useFinnhub();
 
     return (
-        <div className="max-w-full px-2 py-4 mx-auto bg-gray-50 font-sans">
+        <div className="max-w-full px-5 py-4 mx-auto bg-gray-50 font-sans rounded-md">
 
             <div className="flex justify-between items-center mb-4 bg-white p-4 rounded-lg shadow-sm">
                 <h1 className="text-xl font-bold text-gray-800">Market Dashboard</h1>
@@ -32,7 +32,7 @@ function Stocks() {
                                         <span className="font-bold text-sm text-gray-800">{item.symbol.replace('BINANCE:', '')}</span>
                                         <span className="text-[10px] text-gray-400">Time: {item.time ? new Date(item.time).toLocaleTimeString() : '--:--:--'}</span>
                                     </div>
-                                    <div className="text-right flex flex-col items-end">
+                                    <div className="text-right flex flex-col items-end pl-2">
                                         {item.price ? (
                                             <div className={`flex items-center gap-1 ${item.direction === 'up' ? 'text-green-500' : item.direction === 'down' ? 'text-red-500' : 'text-gray-900'}`}>
                                                 {item.direction === 'up' && (

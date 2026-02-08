@@ -73,7 +73,7 @@ export const useFinnhubSocket = (symbols = []) => {
                 socketRef.current.close();
             }
         };
-    }, [symbols.join(",")]); // Re-connect if symbols list changes (simple dependency check)
+    }, [symbols.join(",")]);
 
     return { socketData, status };
 };
