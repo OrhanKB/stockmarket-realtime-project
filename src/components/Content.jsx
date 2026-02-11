@@ -1,7 +1,11 @@
 import Crypto from "./Crypto";
 import USStocks from "./USStocks";
+import { useState } from "react";
 
-const Content = ({ activeTab, gridMode, setGridMode, cryptoData, usStocksData }) => {
+const Content = ({ activeTab, cryptoData, usStocksData, baseSocket }) => {
+
+    const [gridMode, setGridMode] = useState(2);
+
     return (
         <div className="flex flex-col w-[98%] max-w-none mx-auto">
             <div className="self-end flex items-center gap-2 mb-2 bg-white p-1 rounded-lg border border-blue-100 shadow-sm">
@@ -20,11 +24,11 @@ const Content = ({ activeTab, gridMode, setGridMode, cryptoData, usStocksData })
             </div>
 
             {activeTab === 'Crypto' &&
-                <Crypto data={cryptoData} gridMode={gridMode} />
+                <Crypto data={cryptoData} gridMode={gridMode} baseSocket={baseSocket} />
             }
 
             {activeTab === 'US Stocks' &&
-                <USStocks data={usStocksData} gridMode={gridMode} />
+                <USStocks data={usStocksData} gridMode={gridMode} baseSocket={baseSocket} />
             }
         </div>
     );

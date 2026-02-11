@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const API_KEY = import.meta.env.VITE_FINNHUB_API_KEY;
 
@@ -6,6 +6,8 @@ export const useFinnhubSocket = (symbols = []) => {
     const [socketData, setSocketData] = useState({});
     const [status, setStatus] = useState("Initializing");
     const socketRef = useRef(null);
+
+    const listenersRef = useRef([]);
 
     useEffect(() => {
         if (!API_KEY) {
@@ -32,6 +34,7 @@ export const useFinnhubSocket = (symbols = []) => {
                 if (response.type === "ping") return;
 
                 if (response.data) {
+
                     setSocketData((prev) => {
                         const next = { ...prev };
                         response.data.forEach((trade) => {
@@ -54,6 +57,8 @@ export const useFinnhubSocket = (symbols = []) => {
                         });
                         return next;
                     });
+
+                    listenersRef.current.forEach(listener => listener(response));
                 }
             } catch (error) {
                 console.error("Error:", error);
@@ -75,5 +80,13 @@ export const useFinnhubSocket = (symbols = []) => {
         };
     }, [symbols.join(",")]);
 
-    return { socketData, status };
+    const addListener = useCallback((callback) => {
+        listenersRef.current.push(callback);
+    }, []);
+
+    const removeListener = useCallback((callback) => {
+        listenersRef.current = listenersRef.current.filter(cb => cb !== callback);
+    }, []);
+
+    return { socketData, status, addListener, removeListener };
 };

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useFinnhubSocket } from './useFinnhubSocket';
+import { useHistoryAccumulator } from './useHistoryAccumulator';
 
 const API_KEY = import.meta.env.VITE_FINNHUB_API_KEY;
 
@@ -17,7 +18,10 @@ export const useFinnhub = () => {
     const [initialData, setInitialData] = useState({});
 
     const allSymbols = [...STATIC_US_STOCKS, ...STATIC_CRYPTO];
-    const { socketData, status } = useFinnhubSocket(allSymbols);
+    const { socketData, status, addListener, removeListener } = useFinnhubSocket(allSymbols);
+
+
+    const { getHistory } = useHistoryAccumulator({ addListener, removeListener });
 
 
 
@@ -54,7 +58,7 @@ export const useFinnhub = () => {
     }, []);
 
 
-    const realtimeData = {...initialData, ...socketData};
+    const realtimeData = { ...initialData, ...socketData };
 
     const sections = [
         {
@@ -75,5 +79,13 @@ export const useFinnhub = () => {
         }
     ];
 
-    return { sections, status };
+    // 3. Expose Base Socket Interface
+    // We pass the socket methods + getHistory from the hook directly
+    const baseSocket = useMemo(() => ({
+        addListener,
+        removeListener,
+        getHistory
+    }), [addListener, removeListener, getHistory]);
+
+    return { sections, status, baseSocket };
 };

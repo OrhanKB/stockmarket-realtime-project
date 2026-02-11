@@ -4,9 +4,8 @@ import Content from "./Content";
 import TabButtons from "./TabButtons";
 
 function Stocks() {
-    const { sections, status } = useFinnhub();
+    const { sections, status, baseSocket } = useFinnhub();
     const [activeTab, setActiveTab] = useState('Crypto');
-    const [gridMode, setGridMode] = useState(2);
 
     const usStocksData = sections.find(s => s.title === "US Stocks");
     const cryptoData = sections.find(s => s.title === "Crypto");
@@ -29,10 +28,9 @@ function Stocks() {
 
             <Content
                 activeTab={activeTab}
-                gridMode={gridMode}
-                setGridMode={setGridMode}
                 cryptoData={cryptoData}
                 usStocksData={usStocksData}
+                baseSocket={baseSocket}
             />
         </div>
     );
