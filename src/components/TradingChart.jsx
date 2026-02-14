@@ -37,6 +37,15 @@ export default function TradingChart({ data, colors = {} }) {
                 secondsVisible: false,
                 barSpacing: 10,
                 rightOffset: 12,
+                tickMarkFormatter: (time, tickMarkType, locale) => {
+                    const date = new Date(time * 1000);
+                    if (tickMarkType === 2) { // Day
+                        return date.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+                    } else if (tickMarkType === 3) { // Time
+                        return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                    }
+                    return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                },
             },
             localization: {
                 timeFormatter: (timestamp) => {

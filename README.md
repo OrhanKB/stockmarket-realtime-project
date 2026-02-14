@@ -1,5 +1,12 @@
 # Real-time Stock Market Dashboard
 
+LIVE DEMO: https://stockmarket-realtime-project.vercel.app/
+
+<p align="center">
+  <img src="src/assets/screenshots/us-stocks-1.png" width="45%" />
+  <img src="src/assets/screenshots/candlestick.png" width="45%" />
+</p>
+
 This project is a React-based application that provides real-time tracking of US Stocks and Cryptocurrency prices. It utilizes the Finnhub API **using both WebSocket and REST API** to fetch initial market data and stream live trade updates, offering an efficient and responsive user experience.
 
 ## Features
